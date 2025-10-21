@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Billing Page</title>
+<link
+	href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+	rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body {
+	font-family: 'Poppins', sans-serif;
+	background-color: #f0f4f8; /* Light background, slightly different */
+	color: #334155; /* Darker text for better contrast */
+	line-height: 1.6; /* Improved line height for readability */
+}
+
+.bill-container {
+	max-width: 850px; /* Slightly wider container */
+	margin: auto;
+	padding: 3rem; /* Increased padding */
+	background-color: #ffffff;
+	border-radius: 0.75rem;
+	box-shadow: 0 6px 10px -2px rgba(0, 0, 0, 0.15), 0 3px 7px -2px
+		rgba(0, 0, 0, 0.07); /* More pronounced shadow */
+	border: 1px solid #e0e6ed; /* Add a border */
+}
+
+.bill-header {
+	text-align: center;
+	margin-bottom: 2rem; /* Increased margin */
+}
+
+.bill-title {
+	color: #2254f0; /* Tailwind's blue-700, a bit stronger */
+	font-weight: 700; /* Bold font weight */
+	font-size: 2.5rem; /* Larger title */
+	margin-bottom: 1.5rem; /* Increased margin */
+	letter-spacing: -0.025em;
+}
+
+.booking-details {
+	background-color: #edf2f7; /* Lighter background for the section */
+	padding: 2rem; /* Increased padding */
+	border-radius: 0.75rem; /* More rounded corners */
+	margin-bottom: 2rem; /* Increased margin */
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px
+		rgba(0, 0, 0, 0.05); /* Slightly stronger shadow */
+	border: 1px solid #e0e6ed;
+}
+
+.booking-title {
+	color: #2d875e; /* Tailwind's green-700, darker */
+	font-size: 1.875rem; /* Larger heading */
+	font-weight: 600;
+	margin-bottom: 1.25rem; /* Increased margin */
+	border-bottom: 2px solid #f0f0f0; /* Add a border */
+	padding-bottom: 0.75rem;
+}
+
+.detail-label {
+	color: #4a5568;
+	font-weight: 600;
+	margin-bottom: 0.375rem; /* Increased margin */
+	display: block;
+	font-size: 1rem;
+}
+
+.detail-value {
+	color: #1a202c; /* Very dark gray, almost black */
+	font-size: 1.25rem; /* larger */
+	margin-bottom: 1rem;
+	padding-left: 0.5rem; /* Add padding */
+	border-left: 3px solid #a0aec0; /* Add a border */
+	font-weight: 500;
+}
+
+.bill-summary {
+	background-color: #edf2f7;
+	padding: 2rem; /* Increased padding */
+	border-radius: 0.75rem;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px
+		rgba(0, 0, 0, 0.05);
+	border: 1px solid #e0e6ed;
+}
+
+.summary-title {
+	color: #2d875e; /* Tailwind's green-700, darker */
+	font-size: 1.875rem; /* Larger heading */
+	font-weight: 600;
+	margin-bottom: 1.25rem;
+	border-bottom: 2px solid #f0f0f0;
+	padding-bottom: 0.75rem;
+}
+
+.table-container {
+	overflow-x: auto;
+	margin-bottom: 1.5rem;
+}
+
+.bill-table {
+	width: 100%;
+	border-collapse: collapse;
+	border-radius: 0.75rem; /* More rounded corners */
+	overflow: hidden;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px
+		rgba(0, 0, 0, 0.05);
+	border: 1px solid #e0e6ed;
+}
+
+.bill-table thead {
+	background-color: #f7fafc; /* lighter header */
+	border-bottom: 2px solid #e0e6ed;
+}
+
+.bill-table th, .bill-table td {
+	padding: 1.25rem 1.5rem; /* Increased padding */
+	text-align: left;
+	border-bottom: 1px solid #e0e6ed;
+	vertical-align: middle;
+}
+
+.bill-table th {
+	font-weight: 700; /* Make header bold */
+	color: #334155;
+	text-transform: uppercase;
+	font-size: 0.9rem;
+	letter-spacing: 0.05em;
+}
+
+.bill-table td {
+	color: #1a202c;
+	font-size: 1.1rem;
+}
+
+.bill-table tfoot {
+	background-color: #f7fafc; /* Lighter footer */
+	border-top: 2px solid #e0e6ed;
+}
+
+.bill-table tfoot td {
+	font-weight: 700;
+	color: #1a202c;
+	font-size: 1.25rem;
+	padding-top: 1.25rem;
+	padding-bottom: 1.25rem;
+}
+
+.total-amount {
+	color: #e53e3e; /* Tailwind's red-600 */
+	font-size: 1.5rem; /* Larger total */
+}
+
+.print-button {
+	background-color: #3182ce; /* Tailwind's blue-600 */
+	color: white;
+	padding: 0.8rem 2rem; /* Increased padding */
+	border-radius: 0.5rem; /* More rounded */
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.3s ease, box-shadow 0.3s ease;
+	display: block;
+	margin: 2rem auto 0 auto; /* Increased margin */
+	text-align: center;
+	font-size: 1.1rem;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	border: none;
+}
+
+.print-button:hover {
+	background-color: #2767b3; /* Tailwind's blue-700 */
+	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+}
+
+#noData {
+	text-align: center;
+	color: #e53e3e;
+	font-size: 1.5rem;
+	padding: 1.5rem;
+	background-color: #fef5f5;
+	border-radius: 0.5rem;
+	margin-top: 2rem;
+	border: 1px solid #fed7d7;
+	font-weight: 500;
+}
+</style>
+</head>
+<body class="bg-gray-100">
+	<div class="bill-container">
+		<header class="bill-header">
+			<h1 class="bill-title">Your Bill</h1>
+		</header>
+
+		<section class="booking-details">
+			<h2 class="booking-title">Booking Details</h2>
+			<h2 class="text-2xl font-semibold text-gray-800 mb-4">Booking
+				Details</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">Customer
+						Name:</label>
+					<div th:if="${customerName}" th:text="${customerName}"
+						style="color: green;"></div>
+					<p id="customerName" class="text-gray-900 font-medium"></p>
+				</div>
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">Room
+						Type:</label>
+					<div th:if="${typeOfRoom}" th:text="${typeOfRoom}"
+						style="color: green;"></div>
+					<p id="roomType" class="text-gray-900 font-medium"></p>
+				</div>
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">No
+						of Persons:</label>
+					<div th:if="${noOfExtraPersons}" th:text="${noOfExtraPersons}"
+						style="color: green;"></div>
+					<p id="extraPersons" class="text-gray-900 font-medium"></p>
+				</div>
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">No
+						of Days of Stay:</label>
+					<h1>
+						<div th:if="${noOfDaysofStay}" th:text="${noOfDaysofStay}"style="color: green;"></div>
+					</h1>
+					<p id="daysOfStay" class="text-gray-900 font-medium"></p>
+					
+					
+                
+				</div>
+			</div>
+		</section>
+		
+		
+		
+		<section class="booking-details">
+			<h2 class="booking-title">Food Booking Details</h2>
+			<h2 class="text-2xl font-semibold text-gray-800 mb-4">Boooooooooking
+				Details</h2>
+			
+			<label class="block text-gray-700 text-sm font-bold mb-2">Customer
+						Name:</label>
+					<div th:if="${customerName}" th:text="${customerName}"
+						style="color: green;"></div>
+					<p id="customerName" class="text-gray-900 font-medium"></p>
+			
+			
+			  <form class="grid grid-cols-1 md:grid-cols-2 gap-6" th:action="@{/foodBookingPage}" th:object="${food}" method="post">
+          
+          <input type="hidden" name="hotelId" th:value="${hotel.hotelId}" />
+          
+
+           
+        <div>
+        
+        
+                    <label for="roomType" class="block text-gray-700 text-sm font-bold mb-2">Type of food:</label>
+                    <select id="typeOfFood" name="typeOfFood" th:field="*{typeOfFood}" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        <option value="">-- Select a meal type --</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>                        
+                    </select>
+                </div>
+                
+            
+        
+    
+
+            <div class="form-group">
+               
+                <div>
+                    <label for="noOfDaysToServeFood" class="block text-gray-700 text-sm font-bold mb-2">Number of Days to Serve Food:</label>
+                    <input type="number" id="noOfDaysToServeFood" name="noOfDaysToServeFood" th:field="*{noOfDaysToServeFood}" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" min="0" max="5" required>
+                </div>
+                
+            </div>
+                  
+                  
+                  
+                  
+            
+        </form>
+			
+			
+			
+			
+			
+		</section>
+		
+		
+		
+		
+		
+            <form th:action="@{/food}" method="get">
+    <input type="hidden" name="hotelId" th:value="${hotel.hotelId}" />
+    <button type="submit"class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline w-full" >Want to order the Food</button>
+</form>
+            
+                <h2 class="text-1xl font-semibold text-blue-700 text-center mb-1"> OR </h2>
+                
+
+                <div class="md:col-span-2">
+                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline w-full">Go To Billing</button>
+                </div>
+	</div>
+
+
+
+
+</body>
+</html>
+
