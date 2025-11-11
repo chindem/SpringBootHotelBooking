@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Billing Page</title>
+<link
+	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+	rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body {
+	font-family: 'Poppins', sans-serif;
+	background-color: #f0f4f8; /* Light background, slightly different */
+	color: #334155; /* Darker text for better contrast */
+	line-height: 1.6; /* Improved line height for readability */
+    display: flex; /* Added for centering content */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px; /* Added padding around the page */
+    box-sizing: border-box; /* Ensures padding doesn't increase element size */
+}
+
+.bill-container {
+	max-width: 850px; /* Slightly wider container */
+	margin: auto;
+	padding: 3rem; /* Increased padding */
+	background-color: #ffffff;
+	border-radius: 0.75rem;
+	box-shadow: 0 6px 10px -2px rgba(0, 0, 0, 0.15), 0 3px 7px -2px
+		rgba(0, 0, 0, 0.07); /* More pronounced shadow */
+	border: 1px solid #e0e6ed; /* Add a border */
+    width: 100%; /* Ensure it takes full width within max-width */
+}
+
+.bill-header {
+	text-align: center;
+	margin-bottom: 2rem; /* Increased margin */
+}
+
+.bill-title {
+	color: #2254f0; /* Tailwind's blue-700, a bit stronger */
+	font-weight: 700; /* Bold font weight */
+	font-size: 2.5rem; /* Larger title */
+	margin-bottom: 1.5rem; /* Increased margin */
+	letter-spacing: -0.025em;
+    position: relative; /* For the underline effect */
+    padding-bottom: 10px;
+    display: inline-block; /* To make underline fit text width */
+}
+/* Underline effect for the title */
+.bill-title::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 80px; /* Length of the underline */
+    height: 4px;
+    background-color: #4CAF50; /* Green accent for style */
+    border-radius: 2px;
+}
+
+/* Common Section Styling - applied to .booking-details, .coupon-section, .total-summary */
+.section-card { /* Renamed for clarity to avoid confusion with original booking-details */
+	background-color: #edf2f7; /* Lighter background for the section */
+	padding: 2rem; /* Increased padding */
+	border-radius: 0.75rem; /* More rounded corners */
+	margin-bottom: 2rem; /* Increased margin */
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px
+		rgba(0, 0, 0, 0.05); /* Slightly stronger shadow */
+	border: 1px solid #e0e6ed;
+}
+
+.section-title-h2 { /* New class for consistent section titles */
+	color: #2d875e; /* Tailwind's green-700, darker */
+	font-size: 1.875rem; /* Larger heading */
+	font-weight: 600;
+	margin-bottom: 1.25rem;
+	border-bottom: 2px solid #f0f0f0;
+	padding-bottom: 0.75rem;
+    text-align: center; /* Center the section titles */
+}
+
+.detail-label {
+	color: #4a5568;
+	font-weight: 600;
+	margin-bottom: 0.375rem;
+	display: block;
+	font-size: 1rem;
+}
+
+.detail-value {
+	color: #1a202c; /* Very dark gray, almost black */
+	font-size: 1.15rem; /* slightly adjusted size for readability */
+	margin-bottom: 1rem;
+	padding: 0.5rem 0.75rem; /* Add padding for better look */
+	border-left: 3px solid #a0aec0; /* Add a border */
+	font-weight: 500;
+    background-color: #f7fafc; /* light background for values */
+    border-radius: 4px; /* subtle rounding */
+    display: block; /* Ensure it takes full width in its grid cell */
+}
+
+/* Coupon Section Specific Styling */
+.coupon-section {
+    background-color: #e8f5e9; /* Lighter green tint for coupon section */
+    border-color: #c8e6c9; /* Green border */
+}
+
+.coupon-form-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Space between input and button */
+    margin-top: 1.5rem;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: center; /* Center form elements */
+}
+
+.coupon-input {
+    flex-grow: 1; /* Allow input to take available space */
+    padding: 0.75rem 1rem;
+    border: 1px solid #cce5ff; /* Light blue border */
+    border-radius: 0.5rem; /* More rounded corners */
+    font-size: 1rem;
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    min-width: 150px; /* Ensure input is not too small on wrap */
+}
+
+.coupon-input:focus {
+    outline: none;
+    border-color: #007bff; /* Primary blue on focus */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Blue glow on focus */
+}
+
+.coupon-button {
+    background-color: #007bff; /* Primary blue button */
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+
+.coupon-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+.coupon-status {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem; /* Slightly smaller for status messages */
+}
+
+/* Specific status message styling */
+.coupon-status.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.coupon-status.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.coupon-status.info {
+    background-color: #e2e3e5;
+    color: #383d41;
+    border: 1px solid #d6d8db;
+}
+
+/* Total Summary Section Styling */
+.total-summary-section {
+    background-color: #d1ecf1; /* Light blue background for total */
+    border-color: #bee5eb; /* Blue border */
+    padding: 2.5rem; /* More padding */
+    text-align: center;
+    border-radius: 0.75rem; /* Matches other sections */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px
+		rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem; /* Consistent spacing */
+}
+
+.total-label {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #0c5460; /* Darker blue for total labels */
+    margin-bottom: 0.5rem;
+}
+
+.total-amount-display {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #28a745; /* Strong green for the final total */
+    margin-bottom: 1rem;
+}
+
+.current-amount-value { /* Re-using and adapting for total before discount */
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+}
+
+
+/* Print Button Styling */
+.print-button-style { /* New class for the print button */
+	background-color: #3182ce; /* Tailwind's blue-600 */
+	color: white;
+	padding: 1rem 2.5rem; /* Increased padding */
+	border-radius: 0.5rem; /* More rounded */
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+	display: block; /* Make it a block element */
+	margin: 2rem auto 0 auto; /* Center and give margin */
+	text-align: center;
+	font-size: 1.15rem;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* More prominent shadow */
+	border: none;
+}
+
+.print-button-style:hover {
+	background-color: #2767b3; /* Tailwind's blue-700 */
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+/* Original classes that can be removed/adapted */
+/* .bill-summary, .summary-title, .table-container, .bill-table, etc. are now superseded by new sections */
+
+</style>
+</head>
+<body class="bg-gray-100">
+	<div class="bill-container">
+		<header class="bill-header">
+			<h1 class="bill-title">Your Detailed Bill</h1>
+		</header>
+
+		<!-- Hotel Booking Details Section -->
+		<section class="section-card">
+			<h2 class="section-title-h2">Hotel Booking Details</h2>
+			<div th:if="${hotel}" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+				<div class="detail-item">
+					<label class="detail-label">Customer Name:</label>
+					<span class="detail-value" th:text="${hotel.customerName}"></span>
+				</div>
+				<div class="detail-item">
+					<label class="detail-label">Room Type:</label>
+					<span class="detail-value" th:text="${hotel.typeOfRoom}"></span>
+				</div>
+				<div class="detail-item">
+					<label class="detail-label">No of Persons:</label>
+					<span class="detail-value" th:text="${hotel.noOfExtraPersons}"></span>
+				</div>
+				<div class="detail-item">
+					<label class="detail-label">No of Days of Stay:</label>
+					<span class="detail-value" th:text="${hotel.noOfDaysofStay}"></span>
+				</div>
+                <div class="detail-item">
+                    <label class="detail-label">Phone Number:</label>
+                    <span class="detail-value" th:text="${hotel.phoneNumber}"></span>
+                </div>
+                <div class="detail-item">
+                    <label class="detail-label">Room Amount:</label>
+                    <!-- Assuming roomAmount is on the hotel object and is a number -->
+                    <span class="detail-value" th:text="${hotel.roomAmount != 0 ? '$' + hotel.roomAmount : 'N/A'}"></span>
+                </div>
+			</div>
+			<div th:unless="${hotel}" class="text-center text-red-500 font-semibold">No hotel booking details available.</div>
+		</section>
+		
+		<!-- Food Order Details Section -->
+		<section class="section-card">
+			<h2 class="section-title-h2">Food Order Details</h2>
+			<div th:if="${food}" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+				<div class="detail-item">
+					<label class="detail-label">Type of Food:</label>
+					<span class="detail-value" th:text="${food.typeOfFood}"></span>
+				</div>
+				<div class="detail-item">
+					<label class="detail-label">No of Days To Serve:</label>
+					<span class="detail-value" th:text="${food.noOfDaysToServeFood}"></span>
+				</div>
+                <!-- Assuming 'foodPrice' field exists on your Food entity for calculating total -->
+                <div class="detail-item">
+                    <label class="detail-label">Food Charges:</label>
+                    <span class="detail-value" th:text="${food.foodPrice != 0 ? '$' + food.foodPrice : 'N/A'}"></span>
+                </div>
+			</div>
+			<div th:unless="${food}" class="text-center text-gray-500 font-semibold">No food order details yet.</div>
+		</section>
+		
+        <!-- Coupon Section - NEW ADDITION -->
+		<section class="section-card coupon-section">
+			<h2 class="section-title-h2">Apply Coupon</h2>
+            <!-- Total amount before discount -->
+            <div class="current-amount-display">
+                <span class="current-amount-label">Current Total:</span>
+                <span class="current-amount-value" th:text="${totalBeforeDiscount != null ? '$' + totalBeforeDiscount : 'N/A'}">
+                    $0.00
+                </span>
+            </div>
+			<form th:action="@{/applyCoupon}" method="post" id="couponForm" class="coupon-form-group">
+                <!-- Pass hotelId to the coupon application endpoint -->
+                <input type="hidden" name="hotelId" th:value="${hotel?.hotelId}" th:if="${hotel?.hotelId}"/>
+				<input type="text" id="couponCode" name="couponCode" placeholder="Enter coupon code" class="coupon-input" required>
+				<button type="submit" class="coupon-button">Apply Coupon</button>
+			</form>
+            <!-- Messages from the backend after coupon application -->
+            <div id="couponMessageDisplay" class="coupon-status"
+                 th:classappend="${couponMessage == null ? '' : (couponMessage.contains('successfully') ? 'success' : (couponMessage.contains('Invalid') ? 'error' : 'info'))}"
+                 th:if="${couponMessage}" th:text="${couponMessage}">
+                <!-- Example: "Coupon applied successfully!" or "Invalid coupon." -->
+            </div>
+            <div id="discountAmountDisplay" class="coupon-status success" th:if="${discountAmount}" th:text="'Discount Applied: $' + ${discountAmount}">
+                <!-- Example: "Discount Applied: $50.00" -->
+            </div>
+		</section>
+
+        <!-- Total Summary Section - NEW ADDITION -->
+        <section class="total-summary-section">
+            <h2 class="section-title-h2">Your Total Bill</h2>
+            <p class="total-label">Estimated Before Discount:</p>
+            <p class="total-amount-display current-amount-value" id="initialEstimatedTotal">
+                <!-- This will be populated by JavaScript initially -->
+                $0.00
+            </p>
+            <p th:if="${totalBill}" class="total-label mt-4">Final Total After Discount:</p>
+            <p th:if="${totalBill}" class="total-amount-display" th:text="'$' + ${totalBill}">
+                <!-- This will be populated from backend if coupon applied -->
+            </p>
+            <p th:unless="${totalBill}" class="text-gray-600 mt-2 text-sm">Apply a coupon or proceed to final billing for your exact total.</p>
+        </section>
+		
+        <!-- Print Button - REVISED STYLING -->
+		<button type="submit" class="print-button-style">Print the bill</button>
+	</div>
+
+  
+</body>
+</html>

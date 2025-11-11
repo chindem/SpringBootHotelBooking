@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Bill</title>
+    <!-- Use a professional-looking font like Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles to enhance the overall look and feel */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8; /* Light background */
+            color: #334155; /* Dark text for better contrast */
+            line-height: 1.6; /* Improved line height for readability */
+        }
+        .bill-container {
+            max-width: 850px;
+            margin: 2rem auto;
+            padding: 3rem;
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 6px 10px -2px rgba(0, 0, 0, 0.15), 0 3px 7px -2px rgba(0, 0, 0, 0.07);
+            border: 1px solid #e0e6ed;
+        }
+        .bill-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .bill-title {
+            color: #2254f0;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.025em;
+        }
+        .booking-details {
+            background-color: #edf2f7;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e6ed;
+        }
+        .booking-title {
+            color: #2d875e;
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 0.75rem;
+        }
+        .detail-label {
+            color: #4a5568;
+            font-weight: 600;
+            margin-bottom: 0.375rem;
+            display: block;
+            font-size: 1rem;
+        }
+        .detail-value {
+            color: #1a202c;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+            border-left: 3px solid #a0aec0;
+            font-weight: 500;
+        }
+        .bill-summary {
+            background-color: #edf2f7;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e6ed;
+        }
+        .summary-title {
+            color: #2d875e;
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 0.75rem;
+        }
+        .bill-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e6ed;
+        }
+        .bill-table thead {
+            background-color: #f7fafc;
+            border-bottom: 2px solid #e0e6ed;
+        }
+        .bill-table th, .bill-table td {
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+            vertical-align: middle;
+        }
+        .bill-table th {
+            font-weight: 700;
+            color: #334155;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+        }
+        .bill-table td {
+            color: #1a202c;
+            font-size: 1.1rem;
+        }
+        .bill-table tfoot {
+            background-color: #f7fafc;
+            border-top: 2px solid #e0e6ed;
+        }
+        .bill-table tfoot td {
+            font-weight: 700;
+            color: #1a202c;
+            font-size: 1.25rem;
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
+        }
+        .total-amount {
+            color: #e53e3e;
+            font-size: 1.5rem;
+        }
+        .print-button {
+            background-color: #3182ce;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            display: block;
+            margin: 2rem auto 0 auto;
+            text-align: center;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        .print-button:hover {
+            background-color: #2767b3;
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+        }
+        #noData {
+            text-align: center;
+            color: #e53e3e;
+            font-size: 1.5rem;
+            padding: 1.5rem;
+            background-color: #fef5f5;
+            border-radius: 0.5rem;
+            margin-top: 2rem;
+            border: 1px solid #fed7d7;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- The main container for the bill, centered on the page -->
+    <div class="bill-container">
+
+        <!-- Conditional rendering for an error message if the model attribute is not found -->
+        <div th:if="${errorMessage}" id="noData">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <!-- Only display the bill if there is a customer name, which indicates data is present -->
+        <div th:unless="${errorMessage}">
+            <header class="bill-header">
+                <h1 class="bill-title">Your Bill</h1>
+            </header>
+
+            <section class="booking-details">
+                <h2 class="booking-title">Boo00000000ooooking Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Display booking details passed from the controller -->
+                    <div>
+                        <span class="detail-label">Customer Name:</span>
+                        <p class="detail-value" th:text="${customerName}"></p>
+                    </div>
+                    <div>
+                        <span class="detail-label">Room Type:</span>
+                        <p class="detail-value" th:text="${typeOfRoom}"></p>
+                    </div>
+                    <div>
+                        <span class="detail-label">No of Extra Persons:</span>
+                        <p class="detail-value" th:text="${noOfExtraPersons}"></p>
+                    </div>
+                    <div>
+                        <span class="detail-label">No of Days of Stay:</span>
+                        <p class="detail-value" th:text="${noOfDaysofStay}"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bill-summary">
+                <h2 class="summary-title">Bill Summary</h2>
+                <div class="table-container">
+                    <table class="bill-table" id="billTable">
+                        <thead>
+                            <tr>
+                                <th class="text-left">Description</th>
+                                <th class="text-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Display bill itemized charges passed from the controller -->
+                            <tr>
+                                <td class="px-4 py-2">Room Rent</td>
+                                <td class="px-4 py-2 text-right" th:text="'₹' + ${roomRent}"></td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2">Food Charges</td>
+                                <td class="px-4 py-2 text-right" th:text="'₹' + ${foodCharges}"></td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2">Extra Person Charges</td>
+                                <td class="px-4 py-2 text-right" th:text="'₹' + ${extraPersonCharges}"></td>
+                            </tr>
+                            <!-- You could add a th:each loop here to display a list of items -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold">Total</td>
+                                <td class="px-4 py-2 text-right total-amount" th:text="'₹' + ${totalAmount}"></td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold">Tax (12%)</td>
+                                <td class="px-4 py-2 text-right total-amount" th:text="'₹' + ${taxAmount}"></td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold">Grand Total</td>
+                                <td class="px-4 py-2 text-right total-amount" th:text="'₹' + ${grandTotal}"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </section>
+
+            <div class="mt-8 text-center">
+                <!-- A button to easily print the bill -->
+                <button class="print-button">Print Bill</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

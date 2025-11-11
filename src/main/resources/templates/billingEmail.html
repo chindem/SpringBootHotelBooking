@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Billing Details</title>
+    <style>
+        body { font-family: Arial, sans-serif; color:#213240; background:#f3f7f8; padding:20px; }
+        .card { max-width:700px; margin:0 auto; background:#fff; padding:18px; border-radius:6px; }
+        h2 { margin-top:0; color:#2b3e50; }
+        .grid { display:flex; gap:18px; flex-wrap:wrap; }
+        .col { flex:1 1 200px; min-width:160px; }
+        .label { font-weight:600; color:#384a54; }
+        .value { color:#16a34a; font-weight:700; font-size:16px; margin-top:6px; display:block; }
+        .summary { margin-top:14px; border-top:1px solid #e6ecec; padding-top:12px; }
+        @media only screen and (max-width:520px) { .grid{flex-direction:column;} }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>Billing Details</h2>
+    <div class="grid">
+        <div class="col">
+            <div><span class="label">Room/Hotel Bill:</span><span class="value" th:text="${billing.hotelTotalBill}">0</span></div>
+            <div><span class="label">Food Bill:</span><span class="value" th:text="${billing.foodTotalBill}">0</span></div>
+        </div>
+        <div class="col">
+            <div><span class="label">Total Bill:</span><span class="value" th:text="${billing.totalBill}">0</span></div>
+            <div><span class="label">No. of Hotel:</span><span class="value" th:text="${billing.hotel != null ? billing.hotel.hotelName : ''}">Hotel</span></div>
+        </div>
+        <div class="col">
+            <div><span class="label">Billing ID:</span><span class="value" th:text="${billing.billId}">-</span></div>
+        </div>
+    </div>
+
+    <div class="summary">
+        <p>If you have questions about your bill, reply to this email.</p>
+        <p class="small">Thank you for booking with us.</p>
+    </div>
+</div>
+</body>
+</html>

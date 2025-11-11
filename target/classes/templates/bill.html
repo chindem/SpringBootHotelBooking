@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Billing Page</title>
+<link
+	href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+	rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body {
+	font-family: 'Poppins', sans-serif;
+	background-color: #f0f4f8; /* Light background, slightly different */
+	color: #334155; /* Darker text for better contrast */
+	line-height: 1.6; /* Improved line height for readability */
+}
+
+.bill-container {
+	max-width: 850px; /* Slightly wider container */
+	margin: auto;
+	padding: 3rem; /* Increased padding */
+	background-color: #ffffff;
+	border-radius: 0.75rem;
+	box-shadow: 0 6px 10px -2px rgba(0, 0, 0, 0.15), 0 3px 7px -2px
+		rgba(0, 0, 0, 0.07); /* More pronounced shadow */
+	border: 1px solid #e0e6ed; /* Add a border */
+}
+
+.bill-header {
+	text-align: center;
+	margin-bottom: 2rem; /* Increased margin */
+}
+
+.bill-title {
+	color: #2254f0; /* Tailwind's blue-700, a bit stronger */
+	font-weight: 700; /* Bold font weight */
+	font-size: 2.5rem; /* Larger title */
+	margin-bottom: 1.5rem; /* Increased margin */
+	letter-spacing: -0.025em;
+}
+
+.booking-details {
+	background-color: #edf2f7; /* Lighter background for the section */
+	padding: 2rem; /* Increased padding */
+	border-radius: 0.75rem; /* More rounded corners */
+	margin-bottom: 2rem; /* Increased margin */
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px
+		rgba(0, 0, 0, 0.05); /* Slightly stronger shadow */
+	border: 1px solid #e0e6ed;
+}
+
+.booking-title {
+	color: #2d875e; /* Tailwind's green-700, darker */
+	font-size: 1.875rem; /* Larger heading */
+	font-weight: 600;
+	margin-bottom: 1.25rem; /* Increased margin */
+	border-bottom: 2px solid #f0f0f0; /* Add a border */
+	padding-bottom: 0.75rem;
+}
+
+.detail-label {
+	color: #4a5568;
+	font-weight: 600;
+	margin-bottom: 0.375rem; /* Increased margin */
+	display: block;
+	font-size: 1rem;
+}
+
+.detail-value {
+	color: #1a202c; /* Very dark gray, almost black */
+	font-size: 1.25rem; /* larger */
+	margin-bottom: 1rem;
+	padding-left: 0.5rem; /* Add padding */
+	border-left: 3px solid #a0aec0; /* Add a border */
+	font-weight: 500;
+}
+
+.bill-summary {
+	background-color: #edf2f7;
+	padding: 2rem; /* Increased padding */
+	border-radius: 0.75rem;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px
+		rgba(0, 0, 0, 0.05);
+	border: 1px solid #e0e6ed;
+}
+
+.summary-title {
+	color: #2d875e; /* Tailwind's green-700, darker */
+	font-size: 1.875rem; /* Larger heading */
+	font-weight: 600;
+	margin-bottom: 1.25rem;
+	border-bottom: 2px solid #f0f0f0;
+	padding-bottom: 0.75rem;
+}
+
+.table-container {
+	overflow-x: auto;
+	margin-bottom: 1.5rem;
+}
+
+.bill-table {
+	width: 100%;
+	border-collapse: collapse;
+	border-radius: 0.75rem; /* More rounded corners */
+	overflow: hidden;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px
+		rgba(0, 0, 0, 0.05);
+	border: 1px solid #e0e6ed;
+}
+
+.bill-table thead {
+	background-color: #f7fafc; /* lighter header */
+	border-bottom: 2px solid #e0e6ed;
+}
+
+.bill-table th, .bill-table td {
+	padding: 1.25rem 1.5rem; /* Increased padding */
+	text-align: left;
+	border-bottom: 1px solid #e0e6ed;
+	vertical-align: middle;
+}
+
+.bill-table th {
+	font-weight: 700; /* Make header bold */
+	color: #334155;
+	text-transform: uppercase;
+	font-size: 0.9rem;
+	letter-spacing: 0.05em;
+}
+
+.bill-table td {
+	color: #1a202c;
+	font-size: 1.1rem;
+}
+
+.bill-table tfoot {
+	background-color: #f7fafc; /* Lighter footer */
+	border-top: 2px solid #e0e6ed;
+}
+
+.bill-table tfoot td {
+	font-weight: 700;
+	color: #1a202c;
+	font-size: 1.25rem;
+	padding-top: 1.25rem;
+	padding-bottom: 1.25rem;
+}
+
+.total-amount {
+	color: #e53e3e; /* Tailwind's red-600 */
+	font-size: 1.5rem; /* Larger total */
+}
+
+.print-button {
+	background-color: #3182ce; /* Tailwind's blue-600 */
+	color: white;
+	padding: 0.8rem 2rem; /* Increased padding */
+	border-radius: 0.5rem; /* More rounded */
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.3s ease, box-shadow 0.3s ease;
+	display: block;
+	margin: 2rem auto 0 auto; /* Increased margin */
+	text-align: center;
+	font-size: 1.1rem;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	border: none;
+}
+
+.print-button:hover {
+	background-color: #2767b3; /* Tailwind's blue-700 */
+	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+}
+
+#noData {
+	text-align: center;
+	color: #e53e3e;
+	font-size: 1.5rem;
+	padding: 1.5rem;
+	background-color: #fef5f5;
+	border-radius: 0.5rem;
+	margin-top: 2rem;
+	border: 1px solid #fed7d7;
+	font-weight: 500;
+}
+
+.coupon-section {
+    background-color: #e8f5e9; /* Lighter green tint for coupon section */
+    border-color: #c8e6c9; /* Green border */
+}
+
+.coupon-form-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Space between input and button */
+    margin-top: 1.5rem;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: center; /* Center form elements */
+}
+
+.coupon-input {
+    flex-grow: 1; /* Allow input to take available space */
+    padding: 0.75rem 1rem;
+    border: 1px solid #cce5ff; /* Light blue border */
+    border-radius: 0.5rem; /* More rounded corners */
+    font-size: 1rem;
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    min-width: 150px; /* Ensure input is not too small on wrap */
+}
+
+.coupon-input:focus {
+    outline: none;
+    border-color: #007bff; /* Primary blue on focus */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Blue glow on focus */
+}
+
+.coupon-button {
+    background-color: #007bff; /* Primary blue button */
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+
+.coupon-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+.coupon-status {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem; /* Slightly smaller for status messages */
+}
+
+/* Specific status message styling */
+.coupon-status.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.coupon-status.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.coupon-status.info {
+    background-color: #e2e3e5;
+    color: #383d41;
+    border: 1px solid #d6d8db;
+}
+
+/* Total Summary Section Styling */
+.total-summary-section {
+    background-color: #d1ecf1; /* Light blue background for total */
+    border-color: #bee5eb; /* Blue border */
+    padding: 2.5rem; /* More padding */
+    text-align: center;
+    border-radius: 0.75rem; /* Matches other sections */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px
+		rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem; /* Consistent spacing */
+}
+
+.total-label {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #0c5460; /* Darker blue for total labels */
+    margin-bottom: 0.5rem;
+}
+
+.total-amount-display {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #28a745; /* Strong green for the final total */
+    margin-bottom: 1rem;
+}
+
+.current-amount-value { /* Re-using and adapting for total before discount */
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+}
+
+
+
+
+
+
+
+
+</style>
+</head>
+<body class="bg-gray-100">
+	<div class="bill-container">
+		<header class="bill-header">
+			<h1 class="bill-title">Your Bill</h1>
+		</header>
+            
+
+		<section class="booking-details">
+			<h2 class="booking-title">Booking Details</h2>
+			<h2 class="text-2xl font-semibold text-gray-800 mb-4">Booking
+				Details</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">Customer
+						Name:</label>
+					<div th:if="${customerName}" th:text="${customerName}"
+						style="color: green;"></div>
+					<p id="customerName" class="text-gray-900 font-medium"></p>
+				</div>
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">Room
+						Type:</label>
+					<div th:if="${typeOfRoom}" th:text="${typeOfRoom}"
+						style="color: green;"></div>
+					<p id="roomType" class="text-gray-900 font-medium"></p>
+				</div>
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">No
+						of Persons:</label>
+					<div th:if="${noOfExtraPersons}" th:text="${noOfExtraPersons}"
+						style="color: green;"></div>
+					<p id="extraPersons" class="text-gray-900 font-medium"></p>
+				</div>
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">No
+						of Days of Stay:</label>
+					<h1>
+						<div th:if="${noOfDaysofStay}" th:text="${noOfDaysofStay}"style="color: green;"></div>
+					</h1>
+					<p id="daysOfStay" class="text-gray-900 font-medium"></p>
+					
+					
+                
+				</div>
+			</div>
+		</section>
+		
+		
+		<section class="booking-details">
+			<h2 class="booking-title">Booking Details</h2>
+			<h2 class="text-2xl font-semibold text-gray-800 mb-4">Booking
+				Details</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">Type of Food:</label>
+					<div th:if="${typeOfFood}" th:text="${typeOfFood}"
+						style="color: green;"></div>
+					<p id="typeOfFood" class="text-gray-900 "></p>
+					
+				</div>
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">No of Days To Serve:</label>
+					<div th:if="${noOfDaysToServeFood}" th:text="${noOfDaysToServeFood}"
+						style="color: green;"></div>
+					<p id="noOfDaysToServeFood" class="text-gray-900 font-medium"></p>
+				</div>
+				
+			</div>
+			
+		</section>
+		
+		
+	
+          
+		<section class="booking-details">
+			<h2 class="booking-title">Billing Details</h2>
+			<h2 class="text-2xl font-semibold text-gray-800 mb-4">BIlling Details</h2>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+			
+			    <div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">Room Price:</label>
+					<div th:if="${roomPrice}" th:text="${roomPrice}"
+						style="color: green;"></div>
+					<p id="roomPrice" class="text-gray-900 "></p>
+					
+				</div>
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">NoOfDaysofStay:</label>
+					<div th:if="${noOfDaysofStay}" th:text="${noOfDaysofStay}"
+						style="color: green;"></div>
+					<p id="noOfDaysofStay" class="text-gray-900 font-medium"></p>
+				</div>
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">TotalRoomAmount:</label>
+					<div th:if="${roomAmount}" th:text="${roomAmount}"
+						style="color: green;"></div>
+					<p id="typeOfFood" class="text-gray-900 "></p>
+					
+				</div>
+				
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">FoodPrice:</label>
+					<div th:if="${foodPrice}" th:text="${foodPrice}"
+						style="color: green;"></div>
+					<p id="foodPrice" class="text-gray-900 font-medium"></p>
+				</div>
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">NoOfDaysToServeFood:</label>
+					<div th:if="${noOfDaysToServeFood}" th:text="${noOfDaysToServeFood}"
+						style="color: green;"></div>
+					<p id="noOfDaysToServeFood" class="text-gray-900 font-medium"></p>
+					
+					<label class="block text-gray-700 text-sm font-bold mb-2">No
+						of Persons:</label>
+					<div th:if="${noOfExtraPersons}" th:text="${noOfExtraPersons}"
+						style="color: green;"></div>
+					<p id="extraPersons" class="text-gray-900 font-medium"></p>
+				</div>
+				<div>
+					<label class="block text-gray-700 text-sm font-bold mb-2">TotalFoodAmount:</label>
+					<div th:if="${foodAmount}" th:text="${foodAmount}"
+						style="color: green;"></div>
+					<p id="foodAmount" class="text-gray-900 font-medium"></p>
+				
+				
+				
+			</div>
+			
+		</section>
+				
+		
+		<form th:action="@{/billing}" method="get">
+    <input type="hidden" name="foodId" th:value="${food.foodId}" />
+    <input type="hidden" name="hotelId" th:value="${hotel.hotelId}" />
+    
+    
+    
+    
+   				    <button type="submit"class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline w-full" >Go for billing</button>
+   
+        <!-- Print Button - REVISED STYLING -->
+     </form>
+	</div>
+		
+		
+    
+
+            
+               
+
+
+</body>
+</html>
